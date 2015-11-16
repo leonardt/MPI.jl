@@ -49,6 +49,11 @@ const COMM_NULL  = Comm(MPI_COMM_NULL)
 const COMM_SELF  = Comm(MPI_COMM_SELF)
 const COMM_WORLD = Comm(MPI_COMM_WORLD)
 
+type Info
+    val::Cint
+end
+const INFO_NULL  = Info(MPI_INFO_NULL)
+
 type Op
     val::Cint
 end
@@ -445,6 +450,27 @@ end
 function IReduce!{T<:MPIDatatype}(sendbuf::Array{T}, op::Op, root::Integer,
                                   comm::Comm)
     IReduce(sendbuf, length(sendbuf), op, root, comm; in_place=true)
+end
+
+function IAllReduce{T<:MPIDatatype}(sendbuf::Union{Ptr{T},Array{T}}, count::Integer,
+                                 op::Op, comm::Comm; in_place=false)
+    if in_place
+        recvbuf = sendbuf
+        sendbuf = MPI_IN_PLACE
+    else
+        recvbuf = Array(T, count)
+    end
+    rval = Array(Cint, 1)
+    ccall(MPI_IALLREDUCE, Void,
+          (Ptr{T}, Ptr{T}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}, Ptr{Cint},
+           Ptr{Cint}, Ptr{Cint}),
+          sendbuf, recvbuf, &count, &datatypes[T], &op.val, &comm.val, rval,
+          &0)
+    recvbuf, Request(rval[1], sendbuf)
+end
+
+function IAllReduce!{T<:MPIDatatype}(sendbuf::Array{T}, op::Op, comm::Comm)
+    IAllReduce(sendbuf, length(sendbuf), op, comm; in_place=true)
 end
 
 function Scatter{T<:MPIDatatype}(sendbuf::Union{Ptr{T},Array{T}},

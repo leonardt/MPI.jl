@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
   printf("const MPI_RECV_INIT          = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_RECV_INIT));
   printf("const MPI_REDUCE             = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_REDUCE));
   printf("const MPI_IREDUCE            = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_IREDUCE));
+  printf("const MPI_IALLREDUCE         = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_IALLREDUCE));
   printf("const MPI_REQUEST_FREE       = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_REQUEST_FREE));
   printf("const MPI_RSEND              = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_RSEND));
   printf("const MPI_SCAN               = Libdl.dlsym(libmpi, \"%s\")\n", STRING(MPI_SCAN));

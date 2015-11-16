@@ -28,6 +28,7 @@ program gen_constants
   call output("MPI_COMM_SELF    ", MPI_COMM_SELF)
   call output("MPI_COMM_WORLD   ", MPI_COMM_WORLD)
 
+  call output("MPI_INFO_NULL    ", MPI_INFO_NULL)
   call output("MPI_OP_NULL      ", MPI_OP_NULL)
   call output("MPI_BAND         ", MPI_BAND)
   call output("MPI_BOR          ", MPI_BOR)
